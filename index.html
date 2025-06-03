@@ -89,19 +89,117 @@
 
   <script>
     let form = document.querySelector('form');
+
+          class ValidationError extends Error {
+        constructor(message, code) {
+          super(message);      
+          this.name = "ValidationError";  
+          this.code = code;    
+        }
+      }
+
     form.addEventListener('submit', e => {
       e.preventDefault();
       let output = document.querySelector('output');
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+
+      try{
+        if (firstNum.trim() === '' || secondNum.trim() === '') {
+          throw new ValidationError('Both numbers are required.',400);
+        }
+        if (isNaN(Number(firstNum)) || isNaN(Number(secondNum))) {
+          throw new ValidationError('Inputs must be valid numbers.',401);
+        }
+
+
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      }catch(err){
+          alert(err.message); 
+          alert(err.name); // ValidationError
+          alert(err.code); 
+      }finally {
+    console.error('Calculation attempted.');
+  }
+
     });
 
-    let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
+
 
     // Start your code here
     // You may move this JS to another file if you wish
+
+  let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
+    let timerStarted = false;
+
+    errorBtns.forEach((button) => {
+      button.addEventListener('click', handleButtonClick); // Named function here
+    });
+
+    function handleButtonClick(event) {
+      const button = event.target;
+      const label = button.textContent;
+      const el = event.target;
+
+      if (label === 'Console Log') {
+        console.log('Console Log Demo');
+      } else if (label === 'Console Error') {
+        console.error('Console Log Error');
+      } else if (label === 'Console Count') {
+        console.count('Count Button');
+      } else if (label === 'Console Warn') {
+        console.warn('Console Warn Button');
+      } else if (label === 'Console Assert') {
+        const number2 = 2;
+        console.assert(number2 === 3, { number2, errorMSG: 'The number does not equal 3' });
+      } else if (label === 'Console Clear') {
+        console.clear();
+      } else if (label === 'Console Dir') {
+        console.dir(el);
+      } else if (label === 'Console dirxml') {
+        console.dirxml(el);
+      } else if (label === 'Console Group Start') {
+        console.group('Group Label');
+        console.log('Inside group');
+      } else if (label === 'Console Group End') {
+        console.groupEnd();
+      } else if (label === 'Console Table') {
+        console.table([
+          { name: 'Software Engineering', num: 110 },
+          { name: 'Programming Language', num: 130 },
+          { name: 'Advanced Software', num: 112 }
+        ]);
+      } else if (label === 'Start Timer') {
+        if (!timerStarted) {
+          console.time('Timer');
+          timerStarted = true;
+        } else {
+          console.log('Timer already started.');
+        }
+      } else if (label === 'End Timer') {
+        if (timerStarted) {
+          console.timeEnd('Timer');
+          timerStarted = false;
+        } else {
+          console.log('Timer was not started.');
+        }
+      } else if (label === 'Console Trace') {
+        function deep() { deeper(); }
+        function deeper() { deepest(); }
+        function deepest() { console.trace(); }
+        deep();
+      } else if (label === 'Trigger a Global Error') {
+          try {
+            nonExistentFunction();
+          } catch (err) {
+            console.log('Caught an error:', err.message);
+          }
+      }
+    }
+
+
+
   </script>
 </body>
 
