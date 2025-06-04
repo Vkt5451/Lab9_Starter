@@ -115,18 +115,18 @@
 
       try{
         if (firstNum.trim() === '' || secondNum.trim() === '') {
-          throw new ValidationError('Both numbers are required.',400);
+          throw new ValidationError('Error: Both numbers are required.',400);
         }
         if (isNaN(Number(firstNum)) || isNaN(Number(secondNum))) {
-          throw new ValidationError('Inputs must be valid numbers.',401);
+          throw new ValidationError('Error: Inputs must be valid numbers.',401);
         }
 
 
         output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
       }catch(err){
-          alert(err.message); 
-          alert(err.name); // ValidationError
-          alert(err.code); 
+          console.error(err.message); 
+          console.error(err.name); // ValidationError
+          console.error(err.code); 
       }finally {
     console.error('Calculation attempted.');
   }
@@ -202,8 +202,11 @@
             nonExistentFunction();
           } catch (err) {
             console.log('Caught an error:', err.message);
+                if (window.trackJs) {
+                  trackJs.track(err);
+                }
+              }
           }
-      }
     }
 
 
