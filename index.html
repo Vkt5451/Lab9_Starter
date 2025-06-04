@@ -128,7 +128,7 @@
           console.error(err.name); // ValidationError
           console.error(err.code); 
       }finally {
-    console.error('Calculation attempted.');
+    console.log('Calculation attempted.');
   }
 
     });
@@ -149,6 +149,9 @@
       const button = event.target;
       const label = button.textContent;
       const el = event.target;
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        let operator = document.querySelector('#operator').value;
 
       if (label === 'Console Log') {
         console.log('Console Log Demo');
@@ -169,7 +172,10 @@
         console.dirxml(el);
       } else if (label === 'Console Group Start') {
         console.group('Group Label');
-        console.log('Inside group');
+        console.info('First number: ', firstNum);
+        console.info('Second number: ', secondNum);
+        console.info('Operator number: ', operator);
+
       } else if (label === 'Console Group End') {
         console.groupEnd();
       } else if (label === 'Console Table') {
